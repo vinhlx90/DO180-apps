@@ -8,10 +8,10 @@ items:
       openshift.io/generated-by: OpenShiftNewApp
     creationTimestamp: null
     labels:
-      app: hello-world
-      app.kubernetes.io/component: hello-world
-      app.kubernetes.io/instance: hello-world
-    name: hello-world
+      app: php-helloworld
+      app.kubernetes.io/component: php-helloworld
+      app.kubernetes.io/instance: php-helloworld
+    name: php-helloworld
   spec:
     lookupPolicy:
       local: false
@@ -24,35 +24,37 @@ items:
       openshift.io/generated-by: OpenShiftNewApp
     creationTimestamp: null
     labels:
-      app: hello-world
-      app.kubernetes.io/component: hello-world
-      app.kubernetes.io/instance: hello-world
-    name: hello-world
+      app: php-helloworld
+      app.kubernetes.io/component: php-helloworld
+      app.kubernetes.io/instance: php-helloworld
+    name: php-helloworld
   spec:
     nodeSelector: null
     output:
       to:
         kind: ImageStreamTag
-        name: hello-world:latest
+        name: php-helloworld:latest
     postCommit: {}
     resources: {}
     source:
+      contextDir: php-helloworld
       git:
-        uri: https://github.com/vinhlx90/DO188-apps/nodejs-helloworld
+        ref: s2i
+        uri: https://github.com/vinhlx90/DO180-apps
       type: Git
     strategy:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: nodejs:16-ubi8
+          name: php:7.3
           namespace: openshift
       type: Source
     triggers:
     - github:
-        secret: 5jTXLYfRJR7BZT7CI172
+        secret: gbclj2PpKI2f7YwsyhF_
       type: GitHub
     - generic:
-        secret: CSorDa_66x9z-a2RFikZ
+        secret: xn9IFwE8ZU8YsReZwoLy
       type: Generic
     - type: ConfigChange
     - imageChange: {}
@@ -63,19 +65,19 @@ items:
   kind: Deployment
   metadata:
     annotations:
-      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"hello-world:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"hello-world\")].image"}]'
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"php-helloworld:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"php-helloworld\")].image"}]'
       openshift.io/generated-by: OpenShiftNewApp
     creationTimestamp: null
     labels:
-      app: hello-world
-      app.kubernetes.io/component: hello-world
-      app.kubernetes.io/instance: hello-world
-    name: hello-world
+      app: php-helloworld
+      app.kubernetes.io/component: php-helloworld
+      app.kubernetes.io/instance: php-helloworld
+    name: php-helloworld
   spec:
     replicas: 1
     selector:
       matchLabels:
-        deployment: hello-world
+        deployment: php-helloworld
     strategy: {}
     template:
       metadata:
@@ -83,13 +85,15 @@ items:
           openshift.io/generated-by: OpenShiftNewApp
         creationTimestamp: null
         labels:
-          deployment: hello-world
+          deployment: php-helloworld
       spec:
         containers:
         - image: ' '
-          name: hello-world
+          name: php-helloworld
           ports:
           - containerPort: 8080
+            protocol: TCP
+          - containerPort: 8443
             protocol: TCP
           resources: {}
   status: {}
@@ -100,18 +104,22 @@ items:
       openshift.io/generated-by: OpenShiftNewApp
     creationTimestamp: null
     labels:
-      app: hello-world
-      app.kubernetes.io/component: hello-world
-      app.kubernetes.io/instance: hello-world
-    name: hello-world
+      app: php-helloworld
+      app.kubernetes.io/component: php-helloworld
+      app.kubernetes.io/instance: php-helloworld
+    name: php-helloworld
   spec:
     ports:
     - name: 8080-tcp
       port: 8080
       protocol: TCP
       targetPort: 8080
+    - name: 8443-tcp
+      port: 8443
+      protocol: TCP
+      targetPort: 8443
     selector:
-      deployment: hello-world
+      deployment: php-helloworld
   status:
     loadBalancer: {}
 kind: List
