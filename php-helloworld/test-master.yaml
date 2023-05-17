@@ -1,0 +1,56 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: "2023-05-17T02:26:15Z"
+  generation: 2
+  labels:
+    app: test-master
+    app.kubernetes.io/component: test-master
+    app.kubernetes.io/instance: test-master
+  name: test-master
+  namespace: s2i
+  resourceVersion: "7153761"
+  uid: 58ddf5a7-c37a-4f01-9068-635c839f4921
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: test-master:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    git:
+      ref: master
+      uri: https://github.com/vinhlx90/DO180-apps
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: php:7.4-ubi8
+        namespace: openshift
+    type: Source
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - github:
+      secret: 6yo6XGrMGbmrHyNYXdBH
+    type: GitHub
+  - generic:
+      secret: _IaokvlDmEgp6kuGzl75
+    type: Generic
+  - type: ConfigChange
+  - imageChange: {}
+    type: ImageChange
+status:
+  imageChangeTriggers:
+  - from:
+      name: php:7.4-ubi8
+      namespace: openshift
+    lastTriggerTime: null
+    lastTriggeredImageID: image-registry.openshift-image-registry.svc:5000/openshift/php@sha256:1d3cb276b1c7e035f52b6290abbffe34618c7edc6a852d1326c2683e9ad53d94
+  lastVersion: 1

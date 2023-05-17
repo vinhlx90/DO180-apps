@@ -1,0 +1,128 @@
+apiVersion: v1
+items:
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: test-yaml
+      app.kubernetes.io/component: test-yaml
+      app.kubernetes.io/instance: test-yaml
+      app.kubernetes.io/name: php
+    name: test-yaml
+  spec:
+    lookupPolicy:
+      local: false
+  status:
+    dockerImageRepository: ""
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: test-yaml
+      app.kubernetes.io/component: test-yaml
+      app.kubernetes.io/instance: test-yaml
+      app.kubernetes.io/name: php
+    name: test-yaml
+  spec:
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: test-yaml:latest
+    postCommit: {}
+    resources: {}
+    source:
+      git:
+        ref: master
+        uri: https://github.com/vinhlx90/DO180-apps
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: php:7.4-ubi8
+          namespace: openshift
+      type: Source
+    triggers:
+    - github:
+        secret: tEtdlKS4S0g0W-V3F31Z
+      type: GitHub
+    - generic:
+        secret: Tlwvxi_R_wKrTuTLPrZ6
+      type: Generic
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+  status:
+    lastVersion: 0
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"test-yaml:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"test-yaml\")].image"}]'
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: test-yaml
+      app.kubernetes.io/component: test-yaml
+      app.kubernetes.io/instance: test-yaml
+      app.kubernetes.io/name: php
+    name: test-yaml
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        deployment: test-yaml
+    strategy: {}
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          deployment: test-yaml
+      spec:
+        containers:
+        - image: ' '
+          name: test-yaml
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 8443
+            protocol: TCP
+          resources: {}
+  status: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: test-yaml
+      app.kubernetes.io/component: test-yaml
+      app.kubernetes.io/instance: test-yaml
+      app.kubernetes.io/name: php
+    name: test-yaml
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    - name: 8443-tcp
+      port: 8443
+      protocol: TCP
+      targetPort: 8443
+    selector:
+      deployment: test-yaml
+  status:
+    loadBalancer: {}
+kind: List
+metadata: {}
