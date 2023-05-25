@@ -1,0 +1,1 @@
+oc new-app -i nodejs:16-ubi8 --name nodejs-hello https://github.com/vinhlx90/DO180-apps#troubleshoot-s2i --context-dir=nodejs-helloworld --build-env=npm_config_registry=http://${RHT_OCP4_NEXUS_SERVER}/repository/nodejs
